@@ -22,9 +22,9 @@ PARAMS = {
 
 FLAGS = {
     'MODEL_DIR': './logs/rnn_1',
-    'TRAINING_DATA': './train.txt',
-    'VAL_DATA': './val.txt',
-    'TEST_DATA': './test.txt'
+    'TRAINING_DATA': './datasets/train.txt',
+    'VAL_DATA': './datasets/val.txt',
+    'TEST_DATA': './datasets/test.txt'
 }
 vocab_size = utils.initiate_vocabs()
 output_size = vocab_size
