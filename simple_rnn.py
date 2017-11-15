@@ -26,7 +26,7 @@ FLAGS = {
     'VAL_DATA': './datasets/val.txt',
     'TEST_DATA': './datasets/test.txt'
 }
-force_create_vocab = False  # predictions won't run when this if true, tf might return before IDX_WORD is written to disk
+force_create_vocab = False  # predictions won't run when true, tf might return before IDX_WORD is written to disk
 vocab_size = utils.initiate_vocabs(is_forced=force_create_vocab)
 output_size = vocab_size
 
