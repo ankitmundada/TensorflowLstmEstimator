@@ -26,7 +26,8 @@ FLAGS = {
     'VAL_DATA': './datasets/val.txt',
     'TEST_DATA': './datasets/test.txt'
 }
-vocab_size = utils.initiate_vocabs()
+force_create_vocab = False  # predictions won't run when this if true, tf might return before IDX_WORD is written to disk
+vocab_size = utils.initiate_vocabs(is_forced=force_create_vocab)
 output_size = vocab_size
 
 
@@ -163,7 +164,7 @@ for i in range(PARAMS['NUM_ITER']):
         continue
 
 # Make predictions on the test dataset
-if DO_PREDICTION:
+if DO_PREDICTION and not force_create_vocab:  # tf is returning earlier that the json dump. IDX_WORD gives error due to that
     # get results on the test data after all the training
     predictions = rnn_regressor.predict(input_fn=lambda: input_fn(FLAGS['TEST_DATA'], mode=tf.estimator.ModeKeys.PREDICT))
     with open(utils.make_csv(FLAGS['TEST_DATA'], PARAMS['CONTEXT_SIZE']), 'r') as infile:

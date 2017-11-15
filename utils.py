@@ -8,7 +8,10 @@ import json
 
 FLAGS = {
     'WORD_TO_INDEX': './word_to_index.json',
-    'INDEX_TO_WORD': './index_to_word.json'
+    'INDEX_TO_WORD': './index_to_word.json',
+    'TRAINING_DATA': './datasets/train.txt',
+    'VAL_DATA': './datasets/val.txt',
+    'TEST_DATA': './datasets/test.txt',
 }
 word_idx, idx_word = None, None
 
@@ -40,7 +43,7 @@ def convert_index_to_word(data):
     return [idx_word[str(idx)] for idx in data]
 
 
-def initiate_vocabs():
+def initiate_vocabs(is_forced=False):
     """
     Analyze the text corpus and save all the unique words into a json vocabulary. (This happens only first time). If the
     corpus is modified, delete the original vocabulary, so that this method will re-create it with modified corpus.)
@@ -48,8 +51,10 @@ def initiate_vocabs():
     """
     global word_idx
     global idx_word
-    if not os.path.exists(FLAGS['INDEX_TO_WORD']) or not os.path.exists(FLAGS['WORD_TO_INDEX']):
+    if not os.path.exists(FLAGS['INDEX_TO_WORD']) or not os.path.exists(FLAGS['WORD_TO_INDEX']) or is_forced:
         input_word_list = _read_input_into_list(FLAGS['TRAINING_DATA'])
+        np.append(input_word_list, _read_input_into_list(FLAGS['VAL_DATA']))
+        np.append(input_word_list, _read_input_into_list(FLAGS['TEST_DATA']))
         word_idx, idx_word = _build_vocab(input_word_list)
         with open(FLAGS['WORD_TO_INDEX'], 'w') as outfile:
             json.dump(word_idx, outfile)
